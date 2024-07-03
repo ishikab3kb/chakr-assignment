@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, Building2, ChevronDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, Building2, ChevronDown, ChevronRight, MoreHorizontal } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -37,49 +37,44 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Input } from "./ui/input"
+import Link from "next/link"
 
-const data: Company[] = [
+const data: People[] = [
   {
     id: 0,
-    name: "Google",
-    domainName: "google.com",
-    accOwner: "Hugo I",
-    creationDate: "9 July 2024 - 14:19",
-    employess: 284571,
-    linkedIn: "google",
-    address: "Mountaine View",
-    arr: 8.3,
-    opportunities: 'Test Oppurtunity',
+    name: "David Jame",
+    email: "david.j@treelinehotel.com",
+    mobile: "+12345678900",
+    status: "Done",
+    wtf: "",
+    phone: "+12345678900",
+    company: "Salesforce",
   },
   {
     id: 1,
-    name: "Salesforce",
-    domainName: "salesforce.com",
-    accOwner: "Noah A",
-    creationDate: "23 July 2024 - 16:19",
-    employess: 71322,
-    linkedIn: "salesforce",
-    address: "San Francisco",
-    arr: 7.3,
-    opportunities: 'Test Oppurtunity',
+    name: "Brennan Ukbalksdf",
+    email: "bresnnWdlkf@examplr.co",
+    mobile: "+12345677800",
+    status: "Done",
+    wtf: "",
+    phone: "+123456789670",
+    company: "Google",
   },
   
 ]
 
-export type Company = {
+export type People = {
   id: number
   name: String
-  domainName: String
-  accOwner: String
-  creationDate: String
-  employess: Number
-  linkedIn: String
-  address: String
-  arr: Number
-  opportunities: String
+  email: String
+  mobile: String
+  status: "New" | "Progress" | "Done"
+  wtf: String
+  phone: String
+  company: String
 }
 
-export const columns: ColumnDef<Company>[] = [
+export const columns: ColumnDef<People>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -106,87 +101,55 @@ export const columns: ColumnDef<Company>[] = [
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => (
-      <div className="capitalize min-w-[100px]">{row.getValue("name")}</div>
+      <div className="capitalize min-w-[100px] flex justify-between items-center">{row.getValue("name")} <Link href={'/people?'}><Button variant="secondary" className="p-0"><ChevronRight className="text-black/50 text-xs"/></Button></Link></div>
     ),
   },
   {
-    accessorKey: "domainName",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Domain name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("domainName")}</div>,
-  },
-  {
-    accessorKey: "accOwner",
-    header: "Account Owner",
+    accessorKey: "email",
+    header: "Email",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("accOwner")}</div>
+      <div className="capitalize min-w-[100px]">{row.getValue("email")}</div>
     ),
   },
   {
-    accessorKey: "creationDate",
-    header: "Creation Date",
+    accessorKey: "company",
+    header: "Company",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("creationDate")}</div>
+      <div className="capitalize min-w-[100px]">{row.getValue("company")}</div>
     ),
   },
   {
-    accessorKey: "employees",
-    header: () => <div className="text-right">Employees</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("employees"))
-
-      return <div className="text-right font-medium">{amount}</div>
-    },
-  },
-  {
-    accessorKey: "linkedIn",
-    header: "LinkedIn",
+    accessorKey: "mobile",
+    header: "Mobile",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("linkedIn")}</div>
+      <div className="capitalize">{row.getValue("mobile")}</div>
     ),
   },
   {
-    accessorKey: "address",
-    header: "Address",
+    accessorKey: "status",
+    header: "Status",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("address")}</div>
+      <div className="capitalize">{row.getValue("status")}</div>
     ),
   },
   {
-    accessorKey: "arr",
-    header: () => <div className="text-right">ARR</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("arr"))
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount)
-
-      return <div className="text-right font-medium">{formatted}</div>
-    },
+    accessorKey: "wtf",
+    header: "WTF",
+    cell: ({ row }) => (
+      <div className="capitalize min-w-[100px]">{row.getValue("wtf")}</div>
+    ),
   },
   {
-    accessorKey: "opportunities",
-    header: "Opportunities",
+    accessorKey: "phone",
+    header: "Phone",
     cell: ({ row }) => (
-      <div className="capitalize overflow-hidden">{row.getValue("opportunities")}</div>
+      <div className="capitalize">{row.getValue("phone")}</div>
     ),
   },
   
 ]
 
-export function Tablebox() {
+export function PeopleTable() {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const[order,setOrder] = React.useState<string>("ascending");
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -220,7 +183,7 @@ export function Tablebox() {
       <div className="flex items-center justify-between border rounded gap-2 px-2 py-1">
       <div className="flex justify-start gap-[10px]">
         <Building2></Building2>
-        <p>All Comapanies</p>
+        <p>All People</p>
         <p>{data.length}</p>
       </div>
       <div className="flex items-center justify-end gap-[10px]">
@@ -249,6 +212,10 @@ export function Tablebox() {
                   </DropdownMenuCheckboxItem>
                 )
               })}
+          </DropdownMenuContent>
+          {
+            table.getAllColumns().filter((column)=>column.getCanSort()).map((column=>(<DropdownMenuItem key={column.id} onSelect={() => column.toggleSortBy()}></DropdownMenuItem>)))
+          }
         </DropdownMenu> */}
 
         <DropdownMenu>

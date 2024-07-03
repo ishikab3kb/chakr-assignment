@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
-// import { SearchCommandBar } from "@/components/SearchCommandBar";
+import { SearchCommandBar } from "@/components/SearchCommandBar";
 // import MainSection from "@/components/MainSection";
 import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +22,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} flex`}>
-        <Sidebar></Sidebar>
-        {children}
-        <Toaster></Toaster>
+      <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Sidebar></Sidebar>
+            <SearchCommandBar></SearchCommandBar>
+            {children}
+            <Toaster></Toaster>
+          </ThemeProvider>
       </body>
     </html>
   );
